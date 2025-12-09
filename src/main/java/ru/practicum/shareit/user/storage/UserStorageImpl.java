@@ -1,34 +1,30 @@
 package ru.practicum.shareit.user.storage;
 
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.handler.exception.NotFoundException;
 import ru.practicum.shareit.user.model.User;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Repository
+@RequiredArgsConstructor
 public class UserStorageImpl implements UserStorage {
 
+    private static final Logger log = LoggerFactory.getLogger(UserStorageImpl.class);
     private final Map<Long, User> users;
     private final Map<String, Long> emailToUserId;
 
-    public UserStorageImpl() {
-        users = new HashMap<>();
-        emailToUserId = new HashMap<>();
-    }
-
     @Override
     public User postUser(User user) {
-        if (emailToUserId.containsKey(user.getEmail())) {
-            throw new IllegalArgumentException("Email уже используется");
-        }
+        validateEmail(user.getEmail());
 
         user.setId(generateId());
 
         users.put(user.getId(), user);
         emailToUserId.put(user.getEmail(), user.getId());
-
 
         return user;
     }
@@ -53,9 +49,7 @@ public class UserStorageImpl implements UserStorage {
 
         if (patch.getEmail() != null) {
             if (!patch.getEmail().equals(user.getEmail())) {
-                if (emailToUserId.containsKey(patch.getEmail())) {
-                    throw new IllegalArgumentException("Email уже занят");
-                }
+                validateEmail(patch.getEmail());
 
                 emailToUserId.remove(user.getEmail());
                 emailToUserId.put(patch.getEmail(), userId);
@@ -82,5 +76,12 @@ public class UserStorageImpl implements UserStorage {
 
     private long generateId() {
         return users.size() + 1;
+    }
+
+    private void validateEmail(String email) {
+        if (emailToUserId.containsKey(email)) {
+            log.warn("Попытка создания User с занятым email:{}", email);
+            throw new IllegalArgumentException("Email уже используется");
+        }
     }
 }

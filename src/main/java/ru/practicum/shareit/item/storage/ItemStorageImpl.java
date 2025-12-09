@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item.storage;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.handler.exception.NotFoundException;
 import ru.practicum.shareit.item.model.Item;
@@ -7,13 +8,10 @@ import ru.practicum.shareit.item.model.Item;
 import java.util.*;
 
 @Repository
+@RequiredArgsConstructor
 public class ItemStorageImpl implements ItemStorage {
 
     private final Map<Long, Item> items;
-
-    public ItemStorageImpl() {
-        items = new HashMap<>();
-    }
 
     @Override
     public Item postItem(Item item) {
