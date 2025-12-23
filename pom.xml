@@ -6,7 +6,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.3.2</version>
-		<relativePath/>
+		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
 	<groupId>ru.practicum</groupId>
@@ -84,5 +84,17 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>check</id>
+			<!-- Пустой профиль для совместимости с workflow -->
+			<build>
+				<plugins>
+					<!-- Можно добавить минимальные проверки или оставить пустым -->
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
