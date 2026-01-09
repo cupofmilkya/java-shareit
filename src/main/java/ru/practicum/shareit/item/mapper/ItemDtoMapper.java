@@ -1,25 +1,29 @@
 package ru.practicum.shareit.item.mapper;
 
-import lombok.extern.slf4j.Slf4j;
 import ru.practicum.shareit.booking.dto.BookingForItemDto;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.request.mapper.ItemRequestMapper;
+import ru.practicum.shareit.request.model.ItemRequest;
 
 import java.util.Collections;
 import java.util.List;
 
-@Slf4j
 public class ItemDtoMapper {
+
     public static Item toModel(ItemDto dto) {
+        return toModel(dto, null);
+    }
+
+    public static Item toModel(ItemDto dto, ItemRequest itemRequest) {
         return Item.builder()
                 .id(dto.getId())
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .available(dto.getAvailable())
                 .owner(dto.getOwner())
-                .request(dto.getRequest() != null ? ItemRequestMapper.toEntity(dto.getRequest()) : null)
+                .request(itemRequest)
                 .build();
     }
 
@@ -37,6 +41,7 @@ public class ItemDtoMapper {
                 .description(model.getDescription())
                 .available(model.getAvailable())
                 .owner(model.getOwner())
+                .requestId(model.getRequest() != null ? model.getRequest().getId() : 0)
                 .request(model.getRequest() != null ?
                         ItemRequestMapper.toDto(model.getRequest()) : null)
                 .lastBooking(lastBooking)

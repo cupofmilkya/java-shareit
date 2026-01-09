@@ -18,12 +18,13 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.storage.CommentRepository;
 import ru.practicum.shareit.item.storage.ItemRepository;
 import ru.practicum.shareit.request.mapper.ItemRequestMapper;
+import ru.practicum.shareit.request.model.ItemRequest;
+import ru.practicum.shareit.request.storage.ItemRequestRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.storage.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,30 +37,26 @@ public class ItemServiceImpl implements ItemService {
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
     private final CommentRepository commentRepository;
+    private final ItemRequestRepository itemRequestRepository;
 
     @Override
     public ItemDto postItem(long userId, ItemDto itemDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь с id " + userId + " не найден"));
 
-        Item item = ItemDtoMapper.toModel(itemDto);
+        ItemRequest itemRequest = null;
+        if (itemDto.getRequestId() > 0) {
+            itemRequest = itemRequestRepository.findById(itemDto.getRequestId())
+                    .orElseThrow(() -> new NotFoundException("Запрос с id " + itemDto.getRequestId() + " не найден"));
+        }
+
+        Item item = ItemDtoMapper.toModel(itemDto, itemRequest);
         item.setOwner(user);
 
         Item savedItem = itemRepository.save(item);
-        log.info("Создан Item:{}", savedItem);
+        log.info("Создан Item: {}", savedItem);
 
-        return ItemDto.builder()
-                .id(savedItem.getId())
-                .name(savedItem.getName())
-                .description(savedItem.getDescription())
-                .available(savedItem.getAvailable())
-                .owner(savedItem.getOwner())
-                .request(savedItem.getRequest() != null ?
-                        ItemRequestMapper.toDto(savedItem.getRequest()) : null)
-                .lastBooking(null)
-                .nextBooking(null)
-                .comments(Collections.emptyList())
-                .build();
+        return ItemDtoMapper.toDto(savedItem);
     }
 
     @Override

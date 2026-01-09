@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.practicum.shareit.request.dto.ItemRequestDto;
+import ru.practicum.shareit.request.dto.ItemRequestResponseDto;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.booking.dto.BookingForItemDto;
 import ru.practicum.shareit.user.validation.Create;
@@ -32,7 +32,8 @@ public class ItemDto {
     private Boolean available;
 
     private User owner;
-    private ItemRequestDto request;
+    private long requestId;
+    private ItemRequestResponseDto request;
 
     private BookingForItemDto lastBooking;
     private BookingForItemDto nextBooking;
