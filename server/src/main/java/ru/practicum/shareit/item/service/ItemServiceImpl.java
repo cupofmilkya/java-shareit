@@ -44,7 +44,6 @@ public class ItemServiceImpl implements ItemService {
                 .orElseThrow(() -> new NotFoundException("Пользователь с id " + userId + " не найден"));
 
         ItemRequest itemRequest = null;
-        // Используем requestId из DTO
         if (itemDto.getRequestId() != null) {
             itemRequest = itemRequestRepository.findById(itemDto.getRequestId())
                     .orElseThrow(() -> new NotFoundException("Запрос с id " + itemDto.getRequestId() + " не найден"));
@@ -61,7 +60,6 @@ public class ItemServiceImpl implements ItemService {
         Item savedItem = itemRepository.save(item);
         log.info("Создан Item: {}", savedItem);
 
-        // Преобразуем обратно в DTO
         return ItemDto.builder()
                 .id(savedItem.getId())
                 .name(savedItem.getName())
