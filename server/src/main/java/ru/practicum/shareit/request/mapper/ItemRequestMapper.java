@@ -21,7 +21,6 @@ public class ItemRequestMapper {
                                 .name(item.getName())
                                 .description(item.getDescription())
                                 .available(item.getAvailable())
-                                .request(ItemRequestMapper.toDto(request))
                                 .build())
                         .collect(Collectors.toList()) :
                 Collections.emptyList();

@@ -12,7 +12,6 @@ import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.CommentRequestDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.mapper.CommentDtoMapper;
-import ru.practicum.shareit.item.mapper.ItemDtoMapper;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.storage.CommentRepository;
@@ -45,19 +44,33 @@ public class ItemServiceImpl implements ItemService {
                 .orElseThrow(() -> new NotFoundException("Пользователь с id " + userId + " не найден"));
 
         ItemRequest itemRequest = null;
-        if (itemDto.getRequest() != null) {
-            itemRequest = itemRequestRepository.findById(itemDto.getRequest().getId())
-                    .orElseThrow(() -> new NotFoundException("Запрос с id " + itemDto.getRequest().getId() + " не найден"));
+        // Используем requestId из DTO
+        if (itemDto.getRequestId() != null) {
+            itemRequest = itemRequestRepository.findById(itemDto.getRequestId())
+                    .orElseThrow(() -> new NotFoundException("Запрос с id " + itemDto.getRequestId() + " не найден"));
         }
 
-        Item item = ItemDtoMapper.toModel(itemDto, itemRequest);
-        item.setOwner(user);
-        item.setRequest(itemRequest);
+        Item item = Item.builder()
+                .name(itemDto.getName())
+                .description(itemDto.getDescription())
+                .available(itemDto.getAvailable())
+                .owner(user)
+                .request(itemRequest)
+                .build();
 
         Item savedItem = itemRepository.save(item);
         log.info("Создан Item: {}", savedItem);
 
-        return ItemDtoMapper.toDto(savedItem);
+        // Преобразуем обратно в DTO
+        return ItemDto.builder()
+                .id(savedItem.getId())
+                .name(savedItem.getName())
+                .description(savedItem.getDescription())
+                .available(savedItem.getAvailable())
+                .owner(savedItem.getOwner())
+                .request(savedItem.getRequest() != null ?
+                        ItemRequestMapper.toDto(savedItem.getRequest()) : null)
+                .build();
     }
 
 

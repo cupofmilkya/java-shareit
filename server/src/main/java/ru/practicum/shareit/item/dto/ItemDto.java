@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,6 +27,8 @@ public class ItemDto {
 
     private User owner;
 
+    @JsonProperty("requestId")
+    private Long requestId;
     private ItemRequestResponseDto request;
 
     private BookingForItemDto lastBooking;
