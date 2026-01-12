@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item.service;
 
+import jakarta.validation.ValidationException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -230,12 +231,12 @@ public class ItemServiceImpl implements ItemService {
                 LocalDateTime.now());
 
         if (bookings.isEmpty()) {
-            throw new IllegalArgumentException("Пользователь с id " + userId +
+            throw new ValidationException("Пользователь с id " + userId +
                     " не брал в аренду вещь с id " + itemId + " или аренда еще не завершена");
         }
 
         if (commentRequestDto.getText() == null || commentRequestDto.getText().isBlank()) {
-            throw new IllegalArgumentException("Текст комментария не может быть пустым");
+            throw new ValidationException("Текст комментария не может быть пустым");
         }
 
         Comment comment = Comment.builder()
