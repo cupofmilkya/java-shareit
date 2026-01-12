@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item;
 
+import jakarta.validation.ValidationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -307,7 +308,7 @@ class ItemServiceImplIntegrationTest {
                 .text("item")
                 .build();
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(ValidationException.class,
                 () -> itemService.postComment(testUser.getId(), savedItem.getId(), commentRequest));
     }
 
@@ -321,7 +322,7 @@ class ItemServiceImplIntegrationTest {
                 .text("")
                 .build();
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(ValidationException.class,
                 () -> itemService.postComment(testBooker.getId(), savedItem.getId(), commentRequest));
     }
 
