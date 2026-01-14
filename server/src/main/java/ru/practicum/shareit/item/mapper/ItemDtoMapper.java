@@ -42,6 +42,9 @@ public class ItemDtoMapper {
                 .description(model.getDescription())
                 .available(model.getAvailable())
                 .owner(model.getOwner())
+                .requestId(
+                        model.getRequest() != null ? model.getRequest().getId() : null
+                )
                 .request(model.getRequest() != null ?
                         ItemRequestMapper.toDto(model.getRequest()) : null)
                 .lastBooking(lastBooking)
