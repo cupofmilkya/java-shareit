@@ -1,5 +1,6 @@
 package ru.practicum.shareit.request.mapper;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.dto.ItemRequestResponseDto;
@@ -9,9 +10,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@UtilityClass
 public class ItemRequestMapper {
 
-    public static ItemRequestResponseDto toDto(ItemRequest request) {
+    public ItemRequestResponseDto toDto(ItemRequest request) {
         if (request == null) return null;
 
         List<ItemDto> items = request.getItems() != null ?
@@ -34,7 +36,7 @@ public class ItemRequestMapper {
                 .build();
     }
 
-    public static ItemRequest toEntity(ItemRequestResponseDto dto) {
+    public ItemRequest toEntity(ItemRequestResponseDto dto) {
         if (dto == null) return null;
 
         ItemRequest request = new ItemRequest();
@@ -44,7 +46,7 @@ public class ItemRequestMapper {
         return request;
     }
 
-    public static ItemRequest toEntity(ItemRequestDto dto) {
+    public ItemRequest toEntity(ItemRequestDto dto) {
         if (dto == null) return null;
         ItemRequest request = new ItemRequest();
         request.setDescription(dto.getDescription());

@@ -1,7 +1,6 @@
 package shareit.booking;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +13,7 @@ import shareit.booking.dto.BookItemRequestDto;
 import shareit.booking.dto.BookingState;
 
 
-@Controller
+@RestController
 @RequestMapping(path = "/bookings")
 @RequiredArgsConstructor
 @Slf4j

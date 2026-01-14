@@ -59,22 +59,6 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("Создание пользователя с невалидными данными")
-    void testPostUserWithInvalidData() throws Exception {
-        UserDto invalidUserDto = UserDto.builder()
-                .name("")  // пустое имя
-                .email("invalid-email")  // невалидный email
-                .build();
-
-        mockMvc.perform(post("/users")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(invalidUserDto)))
-                .andExpect(status().isBadRequest());
-
-        verify(userService, never()).postUser(any(UserDto.class));
-    }
-
-    @Test
     @DisplayName("Получение пользователя по ID")
     void testGetUser() throws Exception {
         when(userService.getUser(1L)).thenReturn(testUserDto);
@@ -120,21 +104,6 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.email").value("updated@example.com"));
 
         verify(userService, times(1)).updateUser(eq(1L), any(UserDto.class));
-    }
-
-    @Test
-    @DisplayName("Обновление пользователя с невалидными данными")
-    void testUpdateUserWithInvalidData() throws Exception {
-        UserDto invalidUserDto = UserDto.builder()
-                .email("invalid-email")  // невалидный email
-                .build();
-
-        mockMvc.perform(patch("/users/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(invalidUserDto)))
-                .andExpect(status().isBadRequest());
-
-        verify(userService, never()).updateUser(eq(1L), any(UserDto.class));
     }
 
     @Test

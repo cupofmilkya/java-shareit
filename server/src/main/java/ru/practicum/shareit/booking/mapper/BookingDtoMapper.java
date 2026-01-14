@@ -1,14 +1,16 @@
 package ru.practicum.shareit.booking.mapper;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.shareit.booking.dto.BookingResponseDto;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.request.mapper.ItemRequestMapper;
 import ru.practicum.shareit.user.dto.UserDto;
 
+@UtilityClass
 public class BookingDtoMapper {
 
-    public static BookingResponseDto toDto(Booking booking) {
+    public BookingResponseDto toDto(Booking booking) {
         if (booking == null) return null;
 
         ItemDto itemDto = ItemDto.builder()

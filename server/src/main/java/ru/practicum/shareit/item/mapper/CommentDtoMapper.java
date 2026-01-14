@@ -1,13 +1,15 @@
 package ru.practicum.shareit.item.mapper;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.model.Comment;
 
 import java.time.LocalDateTime;
 
+@UtilityClass
 public class CommentDtoMapper {
 
-    public static CommentDto toDto(Comment comment) {
+    public CommentDto toDto(Comment comment) {
         if (comment == null) return null;
 
         return CommentDto.builder()
@@ -18,7 +20,7 @@ public class CommentDtoMapper {
                 .build();
     }
 
-    public static Comment toEntity(CommentDto dto) {
+    public Comment toEntity(CommentDto dto) {
         if (dto == null) return null;
 
         return Comment.builder()

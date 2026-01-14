@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item.mapper;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.shareit.booking.dto.BookingForItemDto;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -10,13 +11,14 @@ import ru.practicum.shareit.request.model.ItemRequest;
 import java.util.Collections;
 import java.util.List;
 
+@UtilityClass
 public class ItemDtoMapper {
 
-    public static Item toModel(ItemDto dto) {
+    public Item toModel(ItemDto dto) {
         return toModel(dto, null);
     }
 
-    public static Item toModel(ItemDto dto, ItemRequest request) {
+    public Item toModel(ItemDto dto, ItemRequest request) {
         Item item = new Item();
         item.setId(dto.getId());
         item.setName(dto.getName());
@@ -26,11 +28,11 @@ public class ItemDtoMapper {
         return item;
     }
 
-    public static ItemDto toDto(Item model) {
+    public ItemDto toDto(Item model) {
         return toDto(model, null, null, Collections.emptyList());
     }
 
-    public static ItemDto toDto(Item model,
+    public ItemDto toDto(Item model,
                                 BookingForItemDto lastBooking,
                                 BookingForItemDto nextBooking,
                                 List<CommentDto> comments) {
